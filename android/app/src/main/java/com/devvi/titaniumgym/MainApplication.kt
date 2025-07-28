@@ -1,4 +1,4 @@
-package com.titaniumgym
+package com.devvi.titaniumgym
 
 import android.app.Application
 import com.facebook.react.PackageList
