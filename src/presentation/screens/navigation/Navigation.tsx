@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
@@ -6,6 +6,8 @@ import { HomeScreen } from '../home/HomeScreen';
 import { ProfileScreen } from '../profile/ProfileScreen';
 import { EntrenamientoScreen } from '../entranamiento/EntrenamientoScreen';
 import { ClienteNuevoScreen } from '../clientes/ClienteNuevoScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import log from '../../../config/helpers/ConfigLogger';
 
 export type RootStackParams = {
   Home: undefined;
@@ -22,6 +24,21 @@ const CustomDrawerContent = (props: any) => {
   const state = props.navigation.getState();
   const currentRoute = state.routes[state.index].name;
 
+  const [tipoUsuario, setTipoUsuario] = useState<any>('');
+  const [usuario, setUsuario] = useState<any>('');
+
+  const getTipoUser = async () => {
+    const tipoUsuario = await AsyncStorage.getItem('@KeyUserType');
+    const usuario = await AsyncStorage.getItem('@KeyUserName');
+    log.debug("🚀 ~ getTipoUser ~ tipoUsuario:", tipoUsuario, 'tipo de dato: ', typeof (tipoUsuario))
+    setTipoUsuario(tipoUsuario);
+    setUsuario(usuario);
+  };
+
+  useEffect(() => {
+    getTipoUser();
+  }, []);
+
 
   return (
     <DrawerContentScrollView {...props} style={{ backgroundColor: '#000' }}>
@@ -31,32 +48,6 @@ const CustomDrawerContent = (props: any) => {
       </View>
 
       {/*Opciones del Drawer */}
-      <DrawerItem
-        label={() => (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              marginLeft: -20,
-              marginRight: -40,
-              marginVertical: -15,
-              padding: 15,
-              backgroundColor: currentRoute === "Home" ? "#B8860B" : "#000",
-              borderRadius: 0
-            }}
-          >
-            <List.Icon
-              style={{ flex: 1, paddingLeft: 5 }}
-              icon={"home"}
-              color={"#FFF"}
-            />
-            <Text style={{ flex: 10, color: "#FFF", fontSize: 16, textAlignVertical: "center", marginLeft: 20, fontWeight: 'bold' }}>
-              {'Home'}
-            </Text>
-          </View>
-        )}
-        onPress={() => { props.navigation.navigate("Home") }}
-      />
 
       <DrawerItem
         label={() => (
@@ -68,77 +59,143 @@ const CustomDrawerContent = (props: any) => {
               marginRight: -40,
               marginVertical: -15,
               padding: 15,
-              backgroundColor: currentRoute === "ClienteNuevo" ? "#B8860B" : "#000",
+              //backgroundColor: currentRoute === "ClienteNuevo" ? "#B8860B" : "#000",
+              backgroundColor: "#000",
               borderRadius: 0
             }}
           >
             <List.Icon
               style={{ flex: 1, paddingLeft: 5 }}
-              icon={"account-multiple-plus"}
+              icon={"face-man"}
               color={"#FFF"}
             />
             <Text style={{ flex: 10, color: "#FFF", fontSize: 16, textAlignVertical: "center", marginLeft: 20, fontWeight: 'bold' }}>
-              {'Añadir nuevo cliente'}
+              {usuario}
             </Text>
           </View>
         )}
-        onPress={() => { props.navigation.navigate("ClienteNuevo") }}
+        onPress={() => { }}
       />
 
-      <DrawerItem
-        label={() => (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              marginLeft: -20,
-              marginRight: -40,
-              marginVertical: -15,
-              padding: 15,
-              backgroundColor: currentRoute === "Profile" ? "#B8860B" : "#000",
-              borderRadius: 0
-            }}
-          >
-            <List.Icon
-              style={{ flex: 1, paddingLeft: 5 }}
-              icon={"account"}
-              color={"#FFF"}
-            />
-            <Text style={{ flex: 10, color: "#FFF", fontSize: 16, textAlignVertical: "center", marginLeft: 20, fontWeight: 'bold' }}>
-              {'Mi perfil'}
-            </Text>
-          </View>
-        )}
-        onPress={() => { props.navigation.navigate("Profile") }}
-      />
+      {
+        tipoUsuario === '1' &&
+        <>
+          <DrawerItem
+            label={() => (
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  marginLeft: -20,
+                  marginRight: -40,
+                  marginVertical: -15,
+                  padding: 15,
+                  backgroundColor: currentRoute === "ClienteNuevo" ? "#B8860B" : "#000",
+                  borderRadius: 0
+                }}
+              >
+                <List.Icon
+                  style={{ flex: 1, paddingLeft: 5 }}
+                  icon={"account-multiple-plus"}
+                  color={"#FFF"}
+                />
+                <Text style={{ flex: 10, color: "#FFF", fontSize: 16, textAlignVertical: "center", marginLeft: 20, fontWeight: 'bold' }}>
+                  {'Ver clientes'}
+                </Text>
+              </View>
+            )}
+            onPress={() => { props.navigation.navigate("ClienteNuevo") }}
+          />
+        </>
+      }
 
-      <DrawerItem
-        label={() => (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              marginLeft: -20,
-              marginRight: -40,
-              marginVertical: -15,
-              padding: 15,
-              backgroundColor: currentRoute === "Training" ? "#B8860B" : "#000",
-              borderRadius: 0
-            }}
-          >
-            <List.Icon
-              style={{ flex: 1, paddingLeft: 5 }}
-              //icon={"arm-flex"}
-              icon={"dumbbell"}
-              color={"#FFF"}
-            />
-            <Text style={{ flex: 10, color: "#FFF", fontSize: 16, textAlignVertical: "center", marginLeft: 20, fontWeight: 'bold' }}>
-              {'Entrenamiento'}
-            </Text>
-          </View>
-        )}
-        onPress={() => { props.navigation.navigate("Training") }}
-      />
+      {
+        tipoUsuario === '2' &&
+        <>
+          <DrawerItem
+            label={() => (
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  marginLeft: -20,
+                  marginRight: -40,
+                  marginVertical: -15,
+                  padding: 15,
+                  backgroundColor: currentRoute === "Home" ? "#B8860B" : "#000",
+                  borderRadius: 0
+                }}
+              >
+                <List.Icon
+                  style={{ flex: 1, paddingLeft: 5 }}
+                  icon={"home"}
+                  color={"#FFF"}
+                />
+                <Text style={{ flex: 10, color: "#FFF", fontSize: 16, textAlignVertical: "center", marginLeft: 20, fontWeight: 'bold' }}>
+                  {'Home'}
+                </Text>
+              </View>
+            )}
+            onPress={() => { props.navigation.navigate("Home") }}
+          />
+
+          <DrawerItem
+            label={() => (
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  marginLeft: -20,
+                  marginRight: -40,
+                  marginVertical: -15,
+                  padding: 15,
+                  backgroundColor: currentRoute === "Profile" ? "#B8860B" : "#000",
+                  borderRadius: 0
+                }}
+              >
+                <List.Icon
+                  style={{ flex: 1, paddingLeft: 5 }}
+                  icon={"account"}
+                  color={"#FFF"}
+                />
+                <Text style={{ flex: 10, color: "#FFF", fontSize: 16, textAlignVertical: "center", marginLeft: 20, fontWeight: 'bold' }}>
+                  {'Mi perfil'}
+                </Text>
+              </View>
+            )}
+            onPress={() => { props.navigation.navigate("Profile") }}
+          />
+
+          <DrawerItem
+            label={() => (
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  marginLeft: -20,
+                  marginRight: -40,
+                  marginVertical: -15,
+                  padding: 15,
+                  backgroundColor: currentRoute === "Training" ? "#B8860B" : "#000",
+                  borderRadius: 0
+                }}
+              >
+                <List.Icon
+                  style={{ flex: 1, paddingLeft: 5 }}
+                  //icon={"arm-flex"}
+                  icon={"dumbbell"}
+                  color={"#FFF"}
+                />
+                <Text style={{ flex: 10, color: "#FFF", fontSize: 16, textAlignVertical: "center", marginLeft: 20, fontWeight: 'bold' }}>
+                  {'Entrenamiento'}
+                </Text>
+              </View>
+            )}
+            onPress={() => { props.navigation.navigate("Training") }}
+          />
+        </>
+      }
+
 
       <DrawerItem
         label={() => (
@@ -169,6 +226,18 @@ const CustomDrawerContent = (props: any) => {
 }
 
 export const Navigation = () => {
+
+  const [tipoUsuario, setTipoUsuario] = useState<any>('');
+
+  const getTipoUser = async () => {
+    const tipoUsuario = await AsyncStorage.getItem('@KeyUserType');
+    log.debug("🚀 ~ getTipoUser ~ tipoUsuario Navigation:", tipoUsuario, 'tipo de dato: ', typeof (tipoUsuario))
+    setTipoUsuario(tipoUsuario);
+  };
+
+  useEffect(() => {
+    getTipoUser();
+  }, []);
 
   return (
     <Drawer.Navigator
