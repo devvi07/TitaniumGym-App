@@ -5,11 +5,16 @@ import { ActivityIndicator, Button, Card, TextInput } from 'react-native-paper';
 import log from '../../../config/helpers/ConfigLogger';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const Item = ({ item, width }: any): React.ReactElement => (
+const Item = ({ item, width, navigation }: any): React.ReactElement => (
 
     <View style={{ marginBottom: 10, marginHorizontal: 16 }}>
-        <Card style={[styles.card, { backgroundColor: '#FFF', borderRadius: 8 }]} >
-
+        <Card 
+            style={[styles.card, { backgroundColor: '#FFF', borderRadius: 8 }]}
+            onPress={()=>{
+                log.debug('CLICK EN LA CARD');    
+                navigation.navigate('ClienteDetail',{ oCliente: item });
+            }}
+        >
             <Card.Content>
 
                 <View
@@ -170,7 +175,7 @@ export const ClienteNuevoScreen = ({ route, navigation }: any) => {
                             <View style={{}}>
                                 <FlatList
                                     data={data}
-                                    renderItem={({ item }) => <Item item={item} width={width} />}
+                                    renderItem={({ item }) => <Item item={item} width={width} navigation={navigation}/>}
                                     keyExtractor={(item: any) => item._id}
                                     style={{ marginTop: 10, marginBottom: 40 }}
                                 />

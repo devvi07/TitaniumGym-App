@@ -221,7 +221,7 @@ export const AddCliente = ({ route, navigation }: any) => {
                                         icon="check-bold"
                                         mode="contained"
                                         onPress={ addCliente }
-                                        buttonColor='#B8860B'
+                                        buttonColor='#8B6508'
                                         labelStyle={{ color: '#FFF' }}
                                         style={{ borderRadius: 7 }}
                                     >

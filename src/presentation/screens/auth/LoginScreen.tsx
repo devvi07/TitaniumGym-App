@@ -153,7 +153,7 @@ export const LoginScreen = ({ navigation }: any) => {
                         <Button
                             mode="contained"
                             onPress={ onLogin }
-                            buttonColor='#B8860B'
+                            buttonColor='#8B6508'
                             labelStyle={{ color: '#FFF' }}
                             style={{ borderRadius: 7 }}
                         >

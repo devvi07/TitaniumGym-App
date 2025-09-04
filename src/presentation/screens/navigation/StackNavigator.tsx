@@ -4,6 +4,8 @@ import { LoginScreen } from '../auth/LoginScreen';
 import { Navigation } from './Navigation';
 import { HomeScreen } from '../home/HomeScreen';
 import { AddCliente } from '../clientes/AddCliente';
+import { ClienteDetail } from '../clientes/ClienteDetail';
+import { RegistrarMedidas } from '../clientes/RegistrarMedidas';
 
 
 
@@ -39,6 +41,34 @@ export const StackNavigator = () => {
                     //headerTitleAlign: 'center',
                 }}
             />
+            <Stack.Screen
+                name="ClienteDetail"
+                component={ClienteDetail}
+                options={{ 
+                    headerShown: true,
+                    title:'Detalle del cliente',
+                    headerStyle:{
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#B8860B',
+                    //headerTitleAlign: 'center',
+                }}
+            />
+
+            <Stack.Screen
+                name="RegistrarMedidas"
+                component={RegistrarMedidas}
+                options={{ 
+                    headerShown: true,
+                    title:'Registrar nuevas medidas',
+                    headerStyle:{
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#B8860B',
+                    //headerTitleAlign: 'center',
+                }}
+            />
+            
         </Stack.Navigator>
     )
 }
