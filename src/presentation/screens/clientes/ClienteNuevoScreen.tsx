@@ -4,8 +4,9 @@ import { FlatList, Image, StatusBar, StyleSheet, Text, TouchableOpacity, useWind
 import { ActivityIndicator, Button, Card, TextInput } from 'react-native-paper';
 import log from '../../../config/helpers/ConfigLogger';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { truncate } from '../utils/Utils';
 
-const Item = ({ item, width, navigation }: any): React.ReactElement => (
+const Item = ({ item, width, navigation, truncate }: any): React.ReactElement => (
 
     <View style={{ marginBottom: 10, marginHorizontal: 16 }}>
         <Card 
@@ -67,7 +68,7 @@ const Item = ({ item, width, navigation }: any): React.ReactElement => (
 
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={[styles.label, { width: width * 0.23 }]}>Email: </Text>
-                            <Text style={styles.value}>{`${item.data.email}`}</Text>
+                            <Text style={styles.value} >{`${truncate(item.data.email, 15)}`}</Text>
                         </View>
 
                         
@@ -175,7 +176,7 @@ export const ClienteNuevoScreen = ({ route, navigation }: any) => {
                             <View style={{}}>
                                 <FlatList
                                     data={data}
-                                    renderItem={({ item }) => <Item item={item} width={width} navigation={navigation}/>}
+                                    renderItem={({ item }) => <Item item={item} width={width} navigation={navigation} truncate={truncate}/>}
                                     keyExtractor={(item: any) => item._id}
                                     style={{ marginTop: 10, marginBottom: 40 }}
                                 />
