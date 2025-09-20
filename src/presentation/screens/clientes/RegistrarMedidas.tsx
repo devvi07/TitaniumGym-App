@@ -4,6 +4,7 @@ import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AlertNotification } from '../../components/modals/AlertNotification';
 import log from '../../../config/helpers/ConfigLogger';
+import { formatDateDDMMMYYY } from '../utils/Utils';
 
 export const RegistrarMedidas = ({ route, navigation }: any) => {
 
@@ -23,42 +24,62 @@ export const RegistrarMedidas = ({ route, navigation }: any) => {
     const [iconAlert, setIconAlert] = useState('');
     const [showAlert, setShowAlert] = useState(false);
 
+    const [statusService, setStatusService] = useState(0);
+
     const toggleAlert = () => setShowAlert(!showAlert);
     const fnAlert = () => {
 
-        /*if(statusService == 201)
+        if (statusService == 201)
             navigation.goBack();
-        else*/
-        toggleAlert();
+        else
+            toggleAlert();
     };
+
+    const setAlert = (title: string, message: string, icon: string) => {
+        setTitleAlert(title);
+        setMessageAlert(message);
+        setIconAlert(icon);
+        setShowAlert(true);
+    }
 
 
     const addMedidas = async () => {
-        const URI = `https://titaniumgym-ws.onrender.com/api/medidas`;
-        const raw = JSON.stringify(
-            {
-                "peso": `${peso}`,
-                "grasa": `${grasa}`,
-                "cuello": `${cuello}`,
-                "hombros": `${hombros}`,
-                "pecho": `${pecho}`,
-                "cintura": `${cintura}`,
-                "cadera": `${cadera}`,
-                "fecha": `${Date.now()}`,
-                "usuario": `${id}`
-            }
-        );
 
-        const response = await fetch(URI, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: raw,
-        });
+        try {
+            setLoading(false);
+            const URI = `https://titaniumgym-ws.onrender.com/api/medidas`;
+            const raw = JSON.stringify(
+                {
+                    "peso": `${peso}`,
+                    "grasa": `${grasa}`,
+                    "cuello": `${cuello}`,
+                    "hombros": `${hombros}`,
+                    "pecho": `${pecho}`,
+                    "cintura": `${cintura}`,
+                    "cadera": `${cadera}`,
+                    "fecha": `${Date.now()}`,
+                    "usuario": `${id}`
+                }
+            );
 
-        const data = await response.json();
-        log.debug("🚀 ~ addMedidas ~ data:", data);
+            const response = await fetch(URI, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: raw,
+            });
+
+            const data = await response.json();
+            setStatusService(201);
+            setLoading(true);
+            setAlert('Éxito', '¡Las medidas se registraron exitosamente!', 'success');
+            log.debug("🚀 ~ addMedidas ~ data:", data);
+        } catch (e) {
+            setLoading(true);
+            setAlert('Error', e!.toString(), 'error');
+        }
+
     }
 
     useEffect(() => {
@@ -83,7 +104,9 @@ export const RegistrarMedidas = ({ route, navigation }: any) => {
                                 <View style={[styles.container2]}>
 
                                     <View style={styles.containerTitle}>
-                                        <Text style={styles.title}>Fecha de registro: </Text>
+                                        <Text style={styles.title}>
+                                            {`Fecha de registro: ${formatDateDDMMMYYY(new Date().toISOString())}`}
+                                        </Text>
                                     </View>
 
                                     <View style={{ marginTop: 10, marginHorizontal: 16 }}>
@@ -94,6 +117,7 @@ export const RegistrarMedidas = ({ route, navigation }: any) => {
                                             theme={{ colors: { primary: '#B8860B' } }}
                                             style={styles.input}
                                             textColor='#000'
+                                            keyboardType='numeric'
                                         />
                                     </View>
 
@@ -105,61 +129,67 @@ export const RegistrarMedidas = ({ route, navigation }: any) => {
                                             theme={{ colors: { primary: '#B8860B' } }}
                                             style={styles.input}
                                             textColor='#000'
+                                            keyboardType='numeric'
                                         />
                                     </View>
 
                                     <View style={{ marginTop: 10, marginHorizontal: 16 }}>
                                         <TextInput
-                                            label="Cuello"
+                                            label="Cuello cm"
                                             value={cuello}
                                             onChangeText={text => setCuello(text)}
                                             theme={{ colors: { primary: '#B8860B' } }}
                                             style={styles.input}
                                             textColor='#000'
+                                            keyboardType='numeric'
                                         />
                                     </View>
 
                                     <View style={{ marginTop: 10, marginHorizontal: 16 }}>
                                         <TextInput
-                                            label="Hombros"
+                                            label="Hombros cm"
                                             value={hombros}
                                             onChangeText={text => setHombros(text)}
                                             theme={{ colors: { primary: '#B8860B' } }}
                                             style={styles.input}
                                             textColor='#000'
+                                            keyboardType='numeric'
                                         />
                                     </View>
 
                                     <View style={{ marginTop: 10, marginHorizontal: 16 }}>
                                         <TextInput
-                                            label="Pecho"
+                                            label="Pecho cm"
                                             value={pecho}
                                             onChangeText={text => setPecho(text)}
                                             theme={{ colors: { primary: '#B8860B' } }}
                                             style={styles.input}
                                             textColor='#000'
+                                            keyboardType='numeric'
                                         />
                                     </View>
 
                                     <View style={{ marginTop: 10, marginHorizontal: 16 }}>
                                         <TextInput
-                                            label="Cintura"
+                                            label="Cintura cm"
                                             value={cintura}
                                             onChangeText={text => setCintura(text)}
                                             theme={{ colors: { primary: '#B8860B' } }}
                                             style={styles.input}
                                             textColor='#000'
+                                            keyboardType='numeric'
                                         />
                                     </View>
 
                                     <View style={{ marginTop: 10, marginHorizontal: 16 }}>
                                         <TextInput
-                                            label="Cadera"
+                                            label="Cadera cm"
                                             value={cadera}
                                             onChangeText={text => setCadera(text)}
                                             theme={{ colors: { primary: '#B8860B' } }}
                                             style={styles.input}
                                             textColor='#000'
+                                            keyboardType='numeric'
                                         />
                                     </View>
 

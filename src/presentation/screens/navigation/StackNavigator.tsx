@@ -6,6 +6,9 @@ import { HomeScreen } from '../home/HomeScreen';
 import { AddCliente } from '../clientes/AddCliente';
 import { ClienteDetail } from '../clientes/ClienteDetail';
 import { RegistrarMedidas } from '../clientes/RegistrarMedidas';
+import { EditarCliente } from '../clientes/EditarCliente';
+import { DatosClinicos } from '../clientes/DatosClinicos';
+import { HistoricoMedidas } from '../clientes/HistoricoMedidas';
 
 
 
@@ -61,6 +64,48 @@ export const StackNavigator = () => {
                 options={{ 
                     headerShown: true,
                     title:'Registrar nuevas medidas',
+                    headerStyle:{
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#B8860B',
+                    //headerTitleAlign: 'center',
+                }}
+            />
+
+            <Stack.Screen
+                name="EditarCliente"
+                component={EditarCliente}
+                options={{ 
+                    headerShown: true,
+                    title:'Editar cliente',
+                    headerStyle:{
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#B8860B',
+                    //headerTitleAlign: 'center',
+                }}
+            />
+
+            <Stack.Screen
+                name="DatosClinicos"
+                component={DatosClinicos}
+                options={{ 
+                    headerShown: true,
+                    title:'Datos clínicos',
+                    headerStyle:{
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#B8860B',
+                    //headerTitleAlign: 'center',
+                }}
+            />
+
+            <Stack.Screen
+                name="HistoricoMedidas"
+                component={HistoricoMedidas}
+                options={{ 
+                    headerShown: true,
+                    title:'Historico de medidas',
                     headerStyle:{
                         backgroundColor: '#000',
                     },

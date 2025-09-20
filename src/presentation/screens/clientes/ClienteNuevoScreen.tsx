@@ -5,15 +5,16 @@ import { ActivityIndicator, Button, Card, TextInput } from 'react-native-paper';
 import log from '../../../config/helpers/ConfigLogger';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { truncate } from '../utils/Utils';
+import FastImage from 'react-native-fast-image';
 
 const Item = ({ item, width, navigation, truncate }: any): React.ReactElement => (
 
     <View style={{ marginBottom: 10, marginHorizontal: 16 }}>
-        <Card 
+        <Card
             style={[styles.card, { backgroundColor: '#FFF', borderRadius: 8 }]}
-            onPress={()=>{
-                log.debug('CLICK EN LA CARD');    
-                navigation.navigate('ClienteDetail',{ oCliente: item });
+            onPress={() => {
+                log.debug('CLICK EN LA CARD');
+                navigation.navigate('ClienteDetail', { oCliente: item });
             }}
         >
             <Card.Content>
@@ -25,31 +26,17 @@ const Item = ({ item, width, navigation, truncate }: any): React.ReactElement =>
                     }}
                 >
 
-                    <View style={{ right: 15 }}>
+                    <View style={{ right: 10 }}>
                         <TouchableOpacity
                             onPress={() => {
                                 log.debug('onPress');
                             }}
                         >
-                            <Image
-                                source={require('../../../assets/img/Asset2.png')}
-                                style={{ width: 90, height: 90, borderRadius: 5 }}
+                            <FastImage
+                                style={{ width: 80, height: 80 }}
+                                source={require('../../../assets/img/user.png')}
+                                resizeMode={FastImage.resizeMode.contain}
                             />
-                            {/*
-                item.foto == "" ?
-                <Image
-                  source={require('../../../assets/img/user.png')}
-                  style={{ width: 90, height: 90, borderRadius: 5 }}
-                />:
-                <FastImage
-                  style={{ width: 100, height: 100, borderRadius: 10 }}
-                  source={{
-                    uri: `${item.foto}`,
-                    priority: FastImage.priority.normal,
-                  }}
-                  resizeMode={FastImage.resizeMode.cover}
-                />
-              */}
 
                         </TouchableOpacity>
                     </View>
@@ -60,7 +47,7 @@ const Item = ({ item, width, navigation, truncate }: any): React.ReactElement =>
                             <Text style={[styles.label, { width: width * 0.23 }]}>Nombre: </Text>
                             <Text style={styles.value}>{`${item.data.name}`}</Text>
                         </View>
-                        
+
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={[styles.label, { width: width * 0.23 }]}>Teléfono: </Text>
                             <Text style={styles.value}>{`${item.data.telefono}`}</Text>
@@ -71,11 +58,11 @@ const Item = ({ item, width, navigation, truncate }: any): React.ReactElement =>
                             <Text style={styles.value} >{`${truncate(item.data.email, 15)}`}</Text>
                         </View>
 
-                        
+
 
                     </View>
 
-                    <View style={{ top: 30, left: -10 }} >
+                    {/*<View style={{ top: 30, left: -10 }} >
                         <TextInput.Icon
                             //icon={ itemActivo === index ?'chevron-up-circle' : 'chevron-right-circle'  } left: width * 0.85, top: -70
                             icon={'chevron-right-circle'}
@@ -85,7 +72,7 @@ const Item = ({ item, width, navigation, truncate }: any): React.ReactElement =>
                                 //toggleTarjeta(index);
                             }}
                         />
-                    </View>
+                    </View>*/}
 
                 </View>
 
@@ -144,12 +131,12 @@ export const ClienteNuevoScreen = ({ route, navigation }: any) => {
             const data = await response.json();
             log.debug("🚀 ~ getClientes ~ data:", data);
             const oCliente: any = [];
-            for(const cliente of data){
+            for (const cliente of data) {
                 log.warn(`cliente: ${cliente.nombre}`);
-                if(cliente.tipoUsuario !== 1)
+                if (cliente.tipoUsuario !== 1)
                     oCliente.push(cliente);
             }
-            
+
             setData(oCliente);
             setLoading(true);
 
@@ -170,22 +157,22 @@ export const ClienteNuevoScreen = ({ route, navigation }: any) => {
             {
                 loading ?
                     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-                        
+
                         {
-                            data.length>0 ?
-                            <View style={{}}>
-                                <FlatList
-                                    data={data}
-                                    renderItem={({ item }) => <Item item={item} width={width} navigation={navigation} truncate={truncate}/>}
-                                    keyExtractor={(item: any) => item._id}
-                                    style={{ marginTop: 10, marginBottom: 40 }}
-                                />
-                            </View>:
-                            <View style={{ flex: 1, marginTop: 180 }}>
-                                <Text style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold' }}>
-                                    No existen clientes registrados.
-                                </Text>
-                            </View>
+                            data.length > 0 ?
+                                <View style={{}}>
+                                    <FlatList
+                                        data={data}
+                                        renderItem={({ item }) => <Item item={item} width={width} navigation={navigation} truncate={truncate} />}
+                                        keyExtractor={(item: any) => item._id}
+                                        style={{ marginTop: 10, marginBottom: 40 }}
+                                    />
+                                </View> :
+                                <View style={{ flex: 1, marginTop: 180 }}>
+                                    <Text style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold' }}>
+                                        No existen clientes registrados.
+                                    </Text>
+                                </View>
                         }
 
                         <View style={{ position: 'absolute', bottom: 0, width: '100%', }}>
